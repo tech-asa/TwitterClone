@@ -242,6 +242,7 @@ a{
 .home .tweet-list .tweet .content .icon-list .like img{
     width: 25px;
     margin-right: 10px;
+    /* カーソルを合わせた時に「手のマーク」に変わる */
     cursor: pointer;
 }
 .home .tweet-list .tweet .content .icon-list .like-count{
