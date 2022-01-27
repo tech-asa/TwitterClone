@@ -33,6 +33,52 @@ $view_tweets = [
     ],
 ];
 
+// intは文字列を表す
+// 便利な関数
+// @param string $datetime 日時
+// @return string
+
+// UNIXタイムスタンプとは、協定世界時(UTC)での1970年1月1日0時0分0秒からの経過時間を秒数で表したもの
+// strtotime(英文形式文字列 or日付/時刻 フォーマット文字列)
+
+// 英文形式文字列使用例)
+// strtotime("+1 day +1 week +1 month +1 year") → 本日から1年1ヶ月と1週間と1日加算してタイムスタンプを取得する
+// 日付/時刻 フォーマット文字列使用例)
+// strtotime("2020-01-02 03:04:05") →1970/1/1 0:0:0 ～ 2020/1/2 3:4:5までの経過秒数を取得する
+
+// functionは関数 今回の場合は「convertToDayTimeAgo」を入れれば、下の{}内の処理が適用される
+// stringは「文字列」が入っているかどうかチェックする関数
+function convertToDayTimeAgo(string $datetime)
+{
+    $unix = strtotime($datetime);   //データを受けた時間
+    $now = time();                  //今現在
+    $diff_sec = $now - $unix;
+
+    if ($diff_sec <  60){   //1分未満の場合
+        $time = $diff_sec;
+        $unit = '秒前';
+    } elseif($diff_sec < (60 * 60)){    //1時間未満の場
+        $time = $diff_sec / 60;
+        $unit = '分前';
+    } elseif($diff_sec < (60 * 60 * 24)) {  //1日未満の場
+        $time = $diff_sec / 3600;
+        $unit = '時間前';
+    } elseif($diff_sec < (60 * 60 * 24 * 32)) { //1ヶ月未満の場合
+        $time = $diff_sec / 86400;
+        $unit = '日前';
+    } else {    //もし1ヶ月以降の場合
+
+        if (date('Y') !== date('Y',$unix)) {    //もし同じ「年」じゃなければ
+            $time = date('Y年n月j日',$unix);
+        } else{ //もし同じ「年」であれば
+            $time = date('n月j日',$unix);   
+        }
+        return $time;
+    }
+
+    return(int)$time.$unit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -121,7 +167,7 @@ $view_tweets = [
                                 <div class="name">
                                     <a href="profile.php?user_id=<?php echo $view_tweet['user_id']; ?>">
                                         <span class="nickname"><?php echo $view_tweet['user_nickname']; ?></span>
-                                        <span class="user-name">@<?php echo $view_tweet['user_name']; ?>・<?php echo $view_tweet['tweet_created_at']; ?></span>
+                                        <span class="user-name">@<?php echo $view_tweet['user_name']; ?>・<?php echo convertToDayTimeAgo($view_tweet['tweet_created_at']); ?></span>
                                     </a>
                                 </div>
                                 <p><?php echo $view_tweet['tweet_body']; ?></p>
