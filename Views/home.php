@@ -33,10 +33,31 @@ $view_tweets = [
     ],
 ];
 
-// intは文字列を表す
+
 // 便利な関数
-// @param string $datetime 日時
-// @return string
+
+/**
+ * 画像ファイル名から画像のURLを生成する
+ *
+ * @param string $name 画像ファイル名
+ * @param string $type user | tweet
+ * @return string
+ */
+function buildImagePath(string $name = null,string $type)
+{
+    if($type === 'user' && !isset($name)){  //ユーザー画像で、ファイル名がセットされていない場合
+        return HOME_URL.'Views/img/icon-default-user.svg';
+    }
+
+    return HOME_URL.'Views/img_uploaded/'. $type .'/'. htmlspecialchars($name); //htmlspecialcharsは全てを文字列に変える(例えばコードを入力させない)
+}
+
+/**
+ * 指定した日時からどれだけ経過したかを取得
+ *
+ * @param string $datetime 日時
+ * @return string
+ */
 
 // UNIXタイムスタンプとは、協定世界時(UTC)での1970年1月1日0時0分0秒からの経過時間を秒数で表したもの
 // strtotime(英文形式文字列 or日付/時刻 フォーマット文字列)
@@ -48,6 +69,7 @@ $view_tweets = [
 
 // functionは関数 今回の場合は「convertToDayTimeAgo」を入れれば、下の{}内の処理が適用される
 // stringは「文字列」が入っているかどうかチェックする関数
+// intは文字列を表す
 function convertToDayTimeAgo(string $datetime)
 {
     $unix = strtotime($datetime);   //データを受けた時間
@@ -159,30 +181,37 @@ function convertToDayTimeAgo(string $datetime)
                         $view_tweet部分がもし $00 => $11 だった場合は 「配列名」と「その値」を使うことができる -->
                         <div class="tweet">
                             <div class="user">
-                            <a href="profile.php?user_id = <?php echo $view_tweet['user_id']; ?>">
-                                    <img src="<?php echo HOME_URL; ?>Views/img_uploaded/user/<?php echo $view_tweet['user_image_name']; ?>" alt="">
+                            <a href="profile.php?user_id = <?php echo htmlspecialchars($view_tweet['user_id']); ?>">
+                                    <img src="<?php echo buildImagePath($view_tweet['user_image_name'],'user'); ?>" alt="">
                                 </a>
                             </div>
                             <div class="content">
                                 <div class="name">
-                                    <a href="profile.php?user_id=<?php echo $view_tweet['user_id']; ?>">
-                                        <span class="nickname"><?php echo $view_tweet['user_nickname']; ?></span>
-                                        <span class="user-name">@<?php echo $view_tweet['user_name']; ?>・<?php echo convertToDayTimeAgo($view_tweet['tweet_created_at']); ?></span>
+                                    <a href="profile.php?user_id=<?php echo htmlspecialchars($view_tweet['user_id']); ?>">
+                                        <span class="nickname"><?php echo htmlspecialchars($view_tweet['user_nickname']); ?></span>
+                                        <span class="user-name">@<?php echo htmlspecialchars($view_tweet['user_name']); ?>・<?php echo convertToDayTimeAgo($view_tweet['tweet_created_at']); ?></span>
                                     </a>
                                 </div>
                                 <p><?php echo $view_tweet['tweet_body']; ?></p>
 
                                 <!-- isset関数は()の中に値が入っていた場合に真を返す値でNULLが入ってなければ基本的に真 -->
                                 <?php if (isset($view_tweet['tweet_image_name'])) : ?>
-                                    <img src="<?php echo HOME_URL; ?>Views/img_uploaded/tweet/<?php echo $view_tweet['tweet_image_name']; ?>" alt="" class="post-image">
+                                    <img src="<?php echo buildImagePath($view_tweet['tweet_image_name'], 'tweet'); ?>" alt="" class="post-image">
                                 <?php endif; ?>
 
                                 <div class="icon-list">
                                     <div class="like">
-                                        <!-- いいね -->
-                                        <img src="<?php echo HOME_URL; ?>Views/img/icon-heart.svg" alt="">
+                                        <?php
+                                            if (isset($view_tweet['like_id'])) {
+                                                // いいね！している場合、青のハートを表示
+                                                echo '<img src="' . HOME_URL . 'Views/img/icon-heart-twitterblue.svg" alt="">';
+                                            } else {
+                                                // いいね！してない場合、グレーのハートを表示
+                                                echo '<img src="' . HOME_URL . 'Views/img/icon-heart.svg" alt="">';
+                                            }
+                                        ?>                                    
                                     </div>
-                                    <div class="like-count">0</div>
+                                    <div class="like-count"><?php echo htmlspecialchars($view_tweet['like_count']); ?></div>
                                 </div>
                             </div>
                         </div>
