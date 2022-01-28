@@ -43,7 +43,7 @@ $view_tweets = [
  * @param string $type user | tweet
  * @return string
  */
-function buildImagePath(string $name = null,string $type)
+function buildImagePath(string $name = null,string $type) /* $nameがnullであれば、$typeにおいて以下の処理を行う */
 {
     if($type === 'user' && !isset($name)){  //ユーザー画像で、ファイル名がセットされていない場合
         return HOME_URL.'Views/img/icon-default-user.svg';
@@ -113,7 +113,14 @@ function convertToDayTimeAgo(string $datetime)
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link href="<?php echo HOME_URL; ?>Views/css/style.css" rel="stylesheet">
-    
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous" defer></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous" defer></script>
+    <!-- いいね！JS -->
+    <script src="<?php echo HOME_URL; ?>Views/js/likes.js" defer></script>
+
+
     <title>ホーム画面 / Twitterクローン</title>
     <meta name="description" content="ホーム画面です">
 </head>
@@ -128,7 +135,10 @@ function convertToDayTimeAgo(string $datetime)
                 <li class="nav-item"><a href="notification.php" class="nav-link"><img src="<?php echo HOME_URL; ?>Views/img/icon-notification.svg" alt=""></a></li>
                 <li class="nav-item"><a href="profile.php" class="nav-link"><img src="<?php echo HOME_URL; ?>Views/img/icon-profile.svg" alt=""></a></li>
                 <li class="nav-item"><a href="post.php" class="nav-link"><img src="<?php echo HOME_URL; ?>Views/img/icon-post-tweet-twitterblue.svg" alt="" class="post-tweet"></a></li>
-                <li class="nav-item my-icon"><img src="<?php echo HOME_URL; ?>Views/img_uploaded/user/sample-person.jpg" alt=""></li>
+                <li class="nav-item my-icon"><img src="<?php echo HOME_URL; ?>Views/img_uploaded/user/sample-person.jpg" alt="" 
+                class="js-popover" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" 
+                data-bs-html="true" data-bs-content="<a href='profile.php'>プロフィール</a><br><a href='sign-out.php'>ログアウト</a>"></li>
+                <!-- ↑参照元https://getbootstrap.jp/docs/5.0/components/popovers/ -->
                 </ul>
             </div>
         </div>
@@ -200,7 +210,7 @@ function convertToDayTimeAgo(string $datetime)
                                 <?php endif; ?>
 
                                 <div class="icon-list">
-                                    <div class="like">
+                                    <div class="like js-like" data-like-id="<?php echo htmlspecialchars($view_tweet['like_id']); ?>">
                                         <?php
                                             if (isset($view_tweet['like_id'])) {
                                                 // いいね！している場合、青のハートを表示
@@ -211,7 +221,7 @@ function convertToDayTimeAgo(string $datetime)
                                             }
                                         ?>                                    
                                     </div>
-                                    <div class="like-count"><?php echo htmlspecialchars($view_tweet['like_count']); ?></div>
+                                    <div class="like-count js-like-count"><?php echo htmlspecialchars($view_tweet['like_count']); ?></div>
                                 </div>
                             </div>
                         </div>
@@ -222,5 +232,12 @@ function convertToDayTimeAgo(string $datetime)
             <?php endif;?>
         </div>
     </div>
+    <script>
+        // 「addEventListener()」は、JavaScriptからさまざまなイベント処理を実行することができるメソッドになります。
+        // 対象要素.addEventListener( 種類=どんな時(今回の場合はWebページが読み込みが完了した時に発動), 関数=どんな処理を, false )
+        document.addEventListener('DOMContentLoaded',function(){
+            $('.js-popover').popover(); //処理
+        },false);
+    </script>
 </body>
 </html>
