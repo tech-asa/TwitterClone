@@ -15,7 +15,7 @@
 <body class="signup text-center">
     <main class="form-signup">
         <form action="sign-up.php" method="post">
-            <img src="../Views/img/logo-white.svg" alt="" class="logo.white">
+            <img src="../Views/img/logo-white.svg" alt="" class="logo-white">
              <h1>アカウントを作る</h1> <!--⏬「form-control」はBootstrapタグで基本的なフォーム、「placeholder」は枠内の初期値、
                                                 「max-length」は最大文字数、「required」は必須入力、「autofocus」は自動で入力状態にする -->
             <input type="text" class="form-control" name="nickname" placeholder="ニックネーム" maxlength="50" required autofocus>
