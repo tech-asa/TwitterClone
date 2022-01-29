@@ -43,10 +43,10 @@ $view_tweets = [
  * @param string $type user | tweet
  * @return string
  */
-function buildImagePath(string $name = null,string $type) /* $nameがnullであれば、$typeに以下の処理を行う */
+function buildImagePath(string $name = null,string $type) /* $nameが第一引数、$typeが第二引数 */
 {
     if($type === 'user' && !isset($name)){  //ユーザー画像で、ファイル名がセットされていない場合
-        return HOME_URL.'Views/img/icon-default-user.svg';
+        return HOME_URL.'Views/img/icon-default-user.svg'; //この処理を行うことによって「buildImagePath」という文字列を入れるだけで左の値を返す
     }
 
     return HOME_URL.'Views/img_uploaded/'. $type .'/'. htmlspecialchars($name); //htmlspecialcharsは全てを文字列に変える(例えばコードを入力させない)
@@ -71,8 +71,7 @@ function buildImagePath(string $name = null,string $type) /* $nameがnullであ�
 // stringは「文字列」が入っているかどうかチェックする関数
 // intは文字列を表す
 
-function convertToDayTimeAgo(string $datetime)
-{
+function convertToDayTimeAgo(string $datetime){ //datetimeはただの引数
     $unix = strtotime($datetime);   //データを受けた時間
     $now = time();                  //今現在
     $diff_sec = $now - $unix;
@@ -120,7 +119,8 @@ function convertToDayTimeAgo(string $datetime)
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous" defer></script>
     <!-- いいね！JS -->
     <script src="<?php echo HOME_URL; ?>Views/js/likes.js" defer></script>
-
+    <!-- 「src」とは「情報元」で参照元のファイルを選択してくる。
+        特に深い意味はないので「とりあえずつけるんだ」という認識 -->
 
     <title>ホーム画面 / Twitterクローン</title>
     <meta name="description" content="ホーム画面です">
@@ -234,6 +234,9 @@ function convertToDayTimeAgo(string $datetime)
         </div>
     </div>
 
+    <!-- 練習エリア -->
+    
+
     <script>
         // 「addEventListener()」は、JavaScriptからさまざまなイベント処理を実行することができるメソッドになります。
         // 対象要素.addEventListener( 種類=どんな時(今回の場合はWebページが読み込みが完了した時に発動), 関数=どんな処理を, false )
@@ -241,6 +244,6 @@ function convertToDayTimeAgo(string $datetime)
             $('.js-popover').popover(); //処理
         },false);
     </script>
-    
+
 </body>
 </html>
