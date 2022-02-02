@@ -6,15 +6,15 @@
  *  ユーザーを作成
  * 
  *  @param array $data
- *  @return bool
+ *  @return bool //論理式(TRUE,FALSE)
  */
 function createUser(array $data)
 {
     // DB接続
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME); //インスタンス化
 
     // 接続エラーがある場合には処理を停止
-    if ($mysqli->connect_errno) { // 直近の接続コールに関するエラーコードを返す
+    if ($mysqli->connect_errno) { // 直近の接続コールに関するエラーコードを返す場合
         echo 'MySQLの接続に失敗しました。:' . $mysqli->connect_error . "<br>"; //直近の接続エラーの説明を返す
         exit;
     }
@@ -42,9 +42,10 @@ function createUser(array $data)
         echo 'エラーメッセージ :' . $mysqli->error . "\n";
     }
  
-    // DB接続を解放
+    // DB接続を解放(解除)
     $statement->close();
     $mysqli->close();
  
+    //最終的に返す値(boolで)
     return $response;
 }
