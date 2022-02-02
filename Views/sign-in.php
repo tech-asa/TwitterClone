@@ -1,12 +1,6 @@
-<?php
-//設定関連を読み込む
-include_once('../config.php'); //他のファイルの読み込み(_onceをつけると一度しか読み込まなくなる)
-//便利な関数を読み込む
-include_once('../util.php');
-?>
-
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <?php include_once('../Views/common/head.php'); ?>
     <title>ログイン画面 / Twitterクローン</title>
@@ -17,6 +11,13 @@ include_once('../util.php');
         <form action="sign-in.php" method="post">
             <img src="<?php echo HOME_URL;?>Views/img/logo-white.svg" alt="" class="logo-white">
              <h1>Twitterクローンにログイン</h1> 
+
+            <?php if (isset($view_try_login_result) && $view_try_login_result === false): ?>
+                <div class="alert alert-warning text-sm" role="alert">
+                    ログインに失敗しました。<br>メールアドレス、パスワードが正しいか<br>ご確認ください。
+                </div>
+            <?php endif; ?>
+
             <input type="email" class="form-control" name="email" placeholder="メールアドレス" required autofocus>
             <input type="password" class="form-control" name="password" placeholder="パスワード" required>
             <!--⏬「w-100」はwidth100%を意味する、btnはBootstrapでボタン、lgは大きな、button type="submit"は送信ボタンで必須 -->
