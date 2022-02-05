@@ -143,6 +143,9 @@ function uploadImage(array $user, array $file, string $type)
     // 画像のファイル名から拡張子を取得(例: .png),strrchrで指定したアドレスの後ろから「.」までのコードを取得できる
     $image_extension = strrchr($file['name'],'.');
 
+    //画像のファイル名を作成(YmbHis: 2021-01-01 00:00:00 ならば 20210101000000)
+    $image_name = $user['id'].'_'.date('YmbHis').$image_extension;
+
     // 保存先のディレクトリ
     $directory = '../Views/img_uploaded/'.$type.'/';
 
@@ -156,8 +159,8 @@ function uploadImage(array $user, array $file, string $type)
     if (exif_imagetype($image_path)) {
         return $image_name;
     }
-
+    
     // 画像ファイル以外の場合
-    echo '選択されたファイルが画像ではないため処理を停止しました。'；
+    echo '選択されたファイルが画像ではないため処理を停止しました。';
     exit;
 }
