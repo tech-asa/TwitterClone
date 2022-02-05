@@ -16,17 +16,15 @@ $try_login_result = null;
 // メールアドレスとパスワードが入力されている場合
 if (isset($_POST['email']) && isset($_POST['password'])) {
     // ログインチェックを実行
-    $user = [];
-
+    $user = findUserAndCheckPassword($_POST['email'],$_POST['password']);
     // ログインに成功した場合
     if ($user) {
         // ユーザー情報をセッションに保存
-
-
+        saveUserSession($user);
         // ホーム画面へ遷移
-        header('Location' . HOME_URL . 'Controllers/home.php');
+        header('Location:'.HOME_URL.'Controllers/home.php'); //headerでブラウザに直接働くようにする
         exit;
-    }   else {  //ログインに失敗した場合
+    } else {  //ログインに失敗した場合
         $try_login_result = false;
     }
 }

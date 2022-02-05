@@ -12,7 +12,8 @@
             <img src="<?php echo HOME_URL;?>Views/img/logo-white.svg" alt="" class="logo-white">
              <h1>Twitterクローンにログイン</h1> 
 
-            <?php if (isset($view_try_login_result) && $view_try_login_result === false): ?>
+            <!-- エラーの時だけ表示したいのでphpを使う -->
+            <?php if(isset($view_try_login_result) && $view_try_login_result === false):?>
                 <div class="alert alert-warning text-sm" role="alert">
                     ログインに失敗しました。<br>メールアドレス、パスワードが正しいか<br>ご確認ください。
                 </div>
