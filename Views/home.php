@@ -18,7 +18,7 @@
             <!-- つぶやき投稿エリア -->
             <div class="tweet-post">
                 <div class="my-icon">
-                    <img src="<?php echo HOME_URL; ?>Views/img_uploaded/user/sample-person.jpg" alt="">
+                    <img src="<?php echo htmlspecialchars($view_user['image_path'])?>" alt="">
                 </div>
                 <!-- 投稿部分 -->
                 <div class="input-area">

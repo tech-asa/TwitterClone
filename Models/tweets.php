@@ -21,6 +21,7 @@ function createTweet(array $data)
 
     // 新規登録のSQLクエリを作成
     $query = 'INSERT INTO tweets(user_id,body,image_name)VALUES(?,?,?)';
+    
     // プリペアドステートメントにクエリを登録
     $statement = $mysqli->prepare($query);
     
