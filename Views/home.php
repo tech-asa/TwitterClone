@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+    
 <head>
     <?php include_once('../Views/common/head.php'); ?>
     <title>ホーム画面 / Twitterクローン</title>

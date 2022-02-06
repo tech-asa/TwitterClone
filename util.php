@@ -80,7 +80,7 @@ function saveUserSession(array $user)
         // セッション開始
         session_start();
     }
-
+    //セッションにデータを入れる
     $_SESSION['USER'] = $user;
 }
 
@@ -89,8 +89,7 @@ function saveUserSession(array $user)
  * 
  * @return void
  */
-function deleteUserSession() //普通の関数名
-{
+function deleteUserSession(){ //普通の関数名
     // セッションを開始していない場合
     if (session_status() === PHP_SESSION_NONE) {
         // セッション開始
@@ -118,7 +117,7 @@ function getUserSession()
         // セッションにユーザー情報がない
         return false;
     }
-
+    // セッションからデータを取り出す
     $user = $_SESSION['USER'];
 
     // 画像のファイル名からファイルのURLを取得
