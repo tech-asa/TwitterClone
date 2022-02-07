@@ -5,6 +5,7 @@
 
 /**
  * ツイートの作成
+ * ツイート情報をデータベースに保存
  * 
  * @param array $data
  * @return bool
