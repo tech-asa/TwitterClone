@@ -70,6 +70,7 @@ function deleteLike(array $data){
     //--------------------
     // 論理削除のクエリを作成
     $query = 'UPDATE likes SET status = "deleted" WHERE id = ? AND user_id = ?';
+    
     $statement = $mysqli->prepare($query);
 
     // プレースホルダーの値をセット
