@@ -1,6 +1,6 @@
 <div class="tweet">
     <div class="user">
-        <a href="profile.php?user_id = <?php echo htmlspecialchars($view_tweet['user_id']); ?>">
+        <a href="profile.php?user_id=<?php echo htmlspecialchars($view_tweet['user_id']); ?>">
             <img src="<?php echo buildImagePath($view_tweet['user_image_name'],'user'); ?>" alt="">
         </a>
     </div>

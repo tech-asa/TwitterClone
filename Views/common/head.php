@@ -13,3 +13,5 @@
     <script src="<?php echo HOME_URL; ?>Views/js/likes.js" defer></script>
     <!-- 「src」とは「情報元」で参照元のファイルを選択してくる。
         特に深い意味はないので「とりあえずつけるんだ」という認識 -->
+    <!-- フォローJS -->
+    <script src="<?php echo HOME_URL; ?>Views/js/follows.js" defer></script>
