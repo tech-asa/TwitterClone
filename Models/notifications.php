@@ -88,7 +88,7 @@ function findNotifications(int $user_id)
         WHERE
             N.status = 'active' AND N.received_user_id = '$user_id'
         ORDER BY
-            N.create_at DESC
+            N.created_at DESC
         LIMIT 50
     SQL;
 
