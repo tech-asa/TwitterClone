@@ -50,13 +50,14 @@ function createNotification(array $data)
  
     return $response;
 }
-
+ 
+ 
 /**
- * 通知の一覧を取得
- * 
- * @param int $user_id
- * @return array|false
- */
+    * 通知の一覧を取得
+    *
+    * @param int $user_id
+    * @return array|false
+    */
 function findNotifications(int $user_id)
 {
     // DB接続
@@ -65,10 +66,10 @@ function findNotifications(int $user_id)
         echo 'MySQLの接続に失敗しました。：' . $mysqli->connect_error . "\n";
         exit;
     }
-
-    //エスケープ
+ 
+    // エスケープ
     $user_id = $mysqli->real_escape_string($user_id);
-
+ 
     // ------------------------------------
     // SQLクエリを作成（検索）
     // ------------------------------------
@@ -91,7 +92,7 @@ function findNotifications(int $user_id)
             N.created_at DESC
         LIMIT 50
     SQL;
-
+ 
     // ------------------------------------
     // 戻り値を作成
     // ------------------------------------
@@ -100,9 +101,9 @@ function findNotifications(int $user_id)
         // 全件取得
         $notifications = $result->fetch_all(MYSQLI_ASSOC);
     } else {
-        $notifications =false;
-        echo 'エラーメッセージ:' . $mysqli->error . "\n";
+        $notifications = false;
+        echo 'エラーメッセージ：' . $mysqli->error . "\n";
     }
-
-    return $notifications;
+ 
+    return  $notifications;
 }

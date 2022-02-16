@@ -86,27 +86,27 @@ function findTweet(int $tweet_id)
 }
 
 /**
- * ツイート一覧の取得
- * 
- * @param array $user ログインしているユーザーの情報
- * @param string $keyword 検索キーワード
- * @param array $user_ids ユーザーID一覧
- * @return array|false
- */
+* ツイート一覧を取得
+*
+* @param array $user ログインしているユーザー情報
+* @param string $keyword 検索キーワード
+* @param array $user_ids ユーザーID一覧
+* @return array|false
+*/
 function findTweets(array $user, string $keyword = null, array $user_ids = null)
 {
     // DB接続
-    $mysqli = new mysqli(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
-
-    // 接続チェック
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    // 接続エラーがある場合->処理停止
     if ($mysqli->connect_errno) {
-        echo 'MySQLの接続に失敗しました。:' . $mysqli->connect_error . "\n";
-    exit;
+        echo 'MySQLの接続に失敗しました。：' . $mysqli->connect_error . "\n";
+        exit;
     }
+    
     // ログインユーザーIDをエスケープ
     $login_user_id = $mysqli->real_escape_string($user['id']);
     
-    // 検索のSQLを作成
+    // 検索のSQLクエリを作成
     $query = <<<SQL
         SELECT
             T.id AS tweet_id,
@@ -118,48 +118,46 @@ function findTweets(array $user, string $keyword = null, array $user_ids = null)
             U.name AS user_name,
             U.nickname AS user_nickname,
             U.image_name AS user_image_name,
-            -- ログインユーザーがいいね！したか(している場合、値が入る)
+            -- ログインユーザーがいいね！したか（いいね！している場合、値が入る）
             L.id AS like_id,
             -- いいね！数
-            (SELECT COUNT(*)FROM likes WHERE status = 'active' AND tweet_id = T.id)AS like_count
-
+            (SELECT COUNT(*) FROM likes WHERE status = 'active' AND tweet_id = T.id) AS like_count
         FROM
-            -- カラムやテーブル名にASをつけると別名を付けることができる これをすることによってコードを読みやすくしたり、処理を早くできる
             tweets AS T
-            -- ユーザーテーブルを紐づける
-            JOIN -- つなぐ
+            -- ユーザーテーブルをusers.idとtweets.user_idで紐付ける
+            JOIN
             users AS U ON U.id = T.user_id AND U.status = 'active'
-            -- いいね！テーブルを紐づける
-            LEFT JOIN -- 片方だけなくてもつなぐ
+            -- いいね！テーブルをlikes.tweet_idとtweets.idで紐付ける
+            LEFT JOIN
             likes AS L ON L.tweet_id = T.id AND L.status = 'active' AND L.user_id = '$login_user_id'
         WHERE
             T.status = 'active'
     SQL;
-
-    //検索キーワードが入力されていた場合
+    
+    // 検索キーワードが入力されていた場合
     if (isset($keyword)) {
         // エスケープ
         $keyword = $mysqli->real_escape_string($keyword);
-        // ツイート主のニックネーム・ユーザー名・本文から部分一致の検索(CONCAT関数は複数の文字、カラムを連結することができる)
-        $query .= 'AND CONCAT(U.nickname,U.name,T.body) LIKE "%' . $keyword . '%"';
+        // ツイート主のニックネーム・ユーザー名・本文から部分一致検索
+        $query .= ' AND CONCAT(U.nickname, U.name, T.body) LIKE "%' . $keyword . '%"';
     }
-
+    
     // ユーザーIDが指定されている場合
-    if (isset($user_ids)) { //複数のIDが入っているので一つ一つエスケープ処理をしていく
-        foreach($user_ids as $key => $user_id){
+    if (isset($user_ids)) {
+        foreach ($user_ids as $key => $user_id) {
             $user_ids[$key] = $mysqli->real_escape_string($user_id);
         }
-        $user_ids_csv = "". join('","',$user_ids)."";
+        $user_ids_csv = '"' . join('","', $user_ids) . '"';
         // ユーザーID一覧に含まれるユーザーで絞る
-        $query .= 'AND T.user_id IN('.$user_ids_csv.')';
+        $query .= ' AND T.user_id IN (' . $user_ids_csv . ')';
     }
-
-    // 新しい順に並び替え(空欄を開けないと動作しない)
+    
+    // 新しい順に並び替え
     $query .= ' ORDER BY T.created_at DESC';
     // 表示件数50件
     $query .= ' LIMIT 50';
-
-    // SQLの実行
+    
+    // クエリ実行
     $result = $mysqli->query($query);
     if ($result) {
         // データを配列で受け取る
@@ -168,8 +166,8 @@ function findTweets(array $user, string $keyword = null, array $user_ids = null)
         $response = false;
         echo 'エラーメッセージ：' . $mysqli->error . "\n";
     }
-
+    
     $mysqli->close();
- 
+    
     return $response;
 }
