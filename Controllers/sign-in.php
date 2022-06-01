@@ -6,7 +6,6 @@
 include_once '../config.php';
 // 便利の関数の読み込み
 include_once '../util.php';
-
 //ユーザーモデルデータを読み込み
 include_once '../Models/users.php';
 
