@@ -1,3 +1,3 @@
 <?php
-include_once 'Controllers/sign-in.php';
+include_once './Controllers/sign-in.php';
 ?>
