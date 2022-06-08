@@ -20,7 +20,7 @@
             <!-- 検索エリア -->
             <form action="search.php" class="get"> <!-- ページを取得する場合はget 送信はpost -->
                 <div class="search-area">
-                    <input type="text" class="form-control" placeholder="キーワード検索" name="keyword" value="<?php echo htmlspecialchars($view_keyword); ?>">
+                    <input type="text" class="form-control" placeholder="キーワード検索" name="keyword" value="">
                     <button type="submit" class="btn">検索</button>
                 </div>
             </form>
