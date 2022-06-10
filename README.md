@@ -13,10 +13,13 @@ https://twitter-clone-portfolio.herokuapp.com/Controllers/sign-in.php
 カリキュラム内での試験的な作成のため、あくまで参考までにと思い、公開しております。
 
 ## 開発環境
-PHP 7.4.21  MySQl 5.6.50 / 5.7.34
+PHP 7.4.21<br>
+MySQl 5.6.50 / 5.7.34
 
 ## 実装機能一覧
-ログイン機能  ユーザー投稿機能  いいね機能
+ログイン機能<br>
+ユーザー投稿機能<br>
+いいね機能
 
 ## 今後実装予定の機能 
 未定
